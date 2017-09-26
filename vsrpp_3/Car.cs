@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace vsrpp_3
 {
+    [Serializable]
     class Car : Vehicle
     {
     }

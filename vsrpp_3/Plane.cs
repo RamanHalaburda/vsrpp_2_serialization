@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace vsrpp_3
 {
+    [Serializable]
     class Plane : Vehicle
     {
-        public ushort Altitude { get; set; }
-        public ushort Capacity { get; set; }
+        [NonSerialized]
+        public ushort Altitude;
+
+        [NonSerialized]
+        public ushort Capacity;
     }
 }

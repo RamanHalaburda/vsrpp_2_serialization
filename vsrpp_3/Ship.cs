@@ -9,9 +9,13 @@ using System.IO;
 
 namespace vsrpp_3
 {
+    [Serializable]
     class Ship : Vehicle
     {
-        public string Port { get; set; }
-        public ushort Capacity { get; set; }
+        [NonSerialized]
+        public string Port;
+
+        [NonSerialized]
+        public ushort Capacity;
     }
 }
