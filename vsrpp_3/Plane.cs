@@ -8,5 +8,7 @@ namespace vsrpp_3
 {
     class Plane : Vehicle
     {
+        public ushort Altitude { get; set; }
+        public ushort Capacity { get; set; }
     }
 }
