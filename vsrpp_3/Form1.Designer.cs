@@ -98,7 +98,7 @@
             // 
             this.PrintList.Location = new System.Drawing.Point(205, 12);
             this.PrintList.Name = "PrintList";
-            this.PrintList.Size = new System.Drawing.Size(787, 328);
+            this.PrintList.Size = new System.Drawing.Size(787, 379);
             this.PrintList.TabIndex = 0;
             this.PrintList.Text = "";
             // 
@@ -110,7 +110,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(187, 215);
+            this.tabControl1.Size = new System.Drawing.Size(187, 267);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage2
@@ -135,7 +135,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(179, 329);
+            this.tabPage2.Size = new System.Drawing.Size(179, 241);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Ship";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -267,7 +267,7 @@
             this.tabPage3.Controls.Add(this.label18);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(179, 329);
+            this.tabPage3.Size = new System.Drawing.Size(179, 241);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plane";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -599,6 +599,7 @@
             this.button6.TabIndex = 4;
             this.button6.Text = "Deserialize";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -608,12 +609,13 @@
             this.button7.TabIndex = 5;
             this.button7.Text = "Serialize";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.button5);
-            this.groupBox1.Location = new System.Drawing.Point(13, 234);
+            this.groupBox1.Location = new System.Drawing.Point(12, 285);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(186, 50);
             this.groupBox1.TabIndex = 6;
@@ -624,7 +626,7 @@
             // 
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.button7);
-            this.groupBox2.Location = new System.Drawing.Point(12, 290);
+            this.groupBox2.Location = new System.Drawing.Point(11, 341);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(186, 50);
             this.groupBox2.TabIndex = 7;
@@ -635,7 +637,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1001, 349);
+            this.ClientSize = new System.Drawing.Size(1001, 396);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);

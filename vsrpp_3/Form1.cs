@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
 using System.IO;
 
 namespace vsrpp_3
@@ -21,10 +22,6 @@ namespace vsrpp_3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-
-            
-
         }
 
         // add car
@@ -51,7 +48,18 @@ namespace vsrpp_3
             PrintVehicles();
         }
 
-        // serialize
+        private void PrintVehicles()
+        {
+            PrintList.Text = String.Empty;
+
+            foreach (Vehicle v in vehicles)
+            {
+                PrintList.Text += v.Print();
+                PrintList.Text += System.Environment.NewLine;
+            }
+        }
+
+        // binary serialize
         private void button4_Click(object sender, EventArgs e)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -66,7 +74,7 @@ namespace vsrpp_3
             }
         }
 
-        // deserialize
+        // binary deserialize
         private void button5_Click(object sender, EventArgs e)
         {
             vehicles.Clear();
@@ -83,14 +91,44 @@ namespace vsrpp_3
             }
         }
 
-        private void PrintVehicles()
+        // XML serialize
+        private void button7_Click(object sender, EventArgs e)
         {
-            PrintList.Text = String.Empty;
-
-            foreach (Vehicle v in vehicles)
+            SoapFormatter sp = new SoapFormatter();
+            using (FileStream fs = new FileStream("XMLList.soap", FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
             {
-                PrintList.Text += v.Print();
-                PrintList.Text += System.Environment.NewLine;
+                foreach (Vehicle v in vehicles)
+                {
+                    sp.Serialize(fs, v);
+                }
+            }
+        }
+
+        // XML deserialize
+        private void button6_Click(object sender, EventArgs e)
+        {
+            vehicles.Clear();
+            SoapFormatter sf = new SoapFormatter();
+            // десериализация из файла
+            using (FileStream fs = new FileStream("XMLList.soap", FileMode.Open))
+            {
+                while (fs.Position != fs.Length)
+                {
+                    vehicles.Add((Vehicle)sf.Deserialize(fs));
+                }
+                
+                //vehicles = (List<Vehicle>)sp.Deserialize(fs);
+
+                //var veh = (List<Vehicle>)sp.Deserialize(fs);
+
+                //Vehicle[] veh = (Vehicle[])sf.Deserialize(fs);
+                //foreach (Vehicle v in veh)
+                //{
+                //    vehicles.Add(v);
+                //}
+
+                PrintVehicles();
+                Console.WriteLine("объект десериализован");
             }
         }
     }
