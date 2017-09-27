@@ -72,13 +72,14 @@ namespace vsrpp_3
             vehicles.Clear();
             BinaryFormatter formatter = new BinaryFormatter();
             // десериализация из файла
-            using (FileStream fs = new FileStream("BinaryList.dat", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("BinaryList.dat", FileMode.Open))
             {
-                Vehicle vehicle = (Vehicle)formatter.Deserialize(fs);
-                vehicles.Add(vehicle);
+                while (fs.Position != fs.Length)
+                {
+                    vehicles.Add((Vehicle)formatter.Deserialize(fs));
+                } 
                 PrintVehicles();
                 Console.WriteLine("объект десериализован");
-                //console.writeline("имя: {0} --- возраст: {1}", newperson.name, newperson.age);
             }
         }
 
