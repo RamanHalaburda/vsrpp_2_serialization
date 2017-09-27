@@ -18,5 +18,16 @@ namespace vsrpp_3
         public uint Cost { get; set; }
         public ushort Year { get; set; }        
         public string Location { get; set; }
+
+        public virtual string Print()
+        {
+            // do nothing
+            return "Brand: " + Brand + 
+                "; Model: " + Model + 
+                "; MaxSpeed: " + MaxSpeed.ToString() + 
+                "; Cost: " + Cost.ToString() +
+                "; Year: " + Year.ToString() +
+                "; Location: " + Location;
+        }
     }
 }
