@@ -30,6 +30,9 @@ namespace vsrpp_3
             this.Capacity = _cap;
         }
 
+        public Ship()
+        { }
+
         public override string Print()
         {
             return "This is a Ship! " +

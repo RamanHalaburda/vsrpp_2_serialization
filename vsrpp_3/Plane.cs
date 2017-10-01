@@ -27,6 +27,9 @@ namespace vsrpp_3
             this.Capacity = _cap;
         }
 
+        public Plane()
+        { }
+
         public override string Print()
         {
             return "This is a Plane! " +

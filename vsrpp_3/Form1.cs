@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.IO;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace vsrpp_3
 {
@@ -94,32 +92,107 @@ namespace vsrpp_3
         // XML serialize
         private void button7_Click(object sender, EventArgs e)
         {
-            SoapFormatter sp = new SoapFormatter();
-            using (FileStream fs = new FileStream("XMLList.soap", FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
+            if (vehicles == null) { return; }
+
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                XmlSerializer serializer = new XmlSerializer(typeof(Vehicle));
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    foreach (Vehicle v in vehicles)
+                    {
+                        serializer.Serialize(stream, v);
+                    }
+                    stream.Position = 0;
+                    xmlDocument.Load(stream);
+                    xmlDocument.Save("xmllist.xml");
+                    stream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log exception here
+            }
+            /*
+            XmlSerializer formatter = new XmlSerializer(typeof(Vehicle));
+
+            using (FileStream fs = new FileStream("XMLList.xml", FileMode.OpenOrCreate))
             {
                 foreach (Vehicle v in vehicles)
                 {
-                    sp.Serialize(fs, v);
+                    formatter.Serialize(fs, v);
                 }
             }
+            */
+
+            //SoapFormatter sp = new SoapFormatter();
+            //using (FileStream fs = new FileStream("SoapList.soap", FileMode.OpenOrCreate))
+            //{
+            //    
+            //}
         }
 
         // XML deserialize
         private void button6_Click(object sender, EventArgs e)
         {
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load("xmllist.xml");
+                string xmlString = xmlDocument.OuterXml;
+
+                using (StringReader read = new StringReader(xmlString))
+                {
+                    Type outType = typeof(Vehicle);
+
+                    XmlSerializer serializer = new XmlSerializer(outType);
+                    using (XmlReader reader = new XmlTextReader(read))
+                    {
+                        while (reader.EOF)
+                        {
+                            vehicles.Add((Vehicle)serializer.Deserialize(reader));
+                        }
+                        reader.Close();
+                    }
+
+                    read.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log exception here
+            }
+
+            PrintVehicles();
+            /*
+            XmlSerializer formatter = new XmlSerializer(typeof(Vehicle));
+
+            using (FileStream fs = new FileStream("XMLList.xml", FileMode.Open))
+            {
+                while (fs.Position != fs.Length)
+                {
+                    vehicles.Add((Vehicle)formatter.Deserialize(fs));
+                }
+            }
+            */
+
+            /*
             vehicles.Clear();
             SoapFormatter sf = new SoapFormatter();
             // десериализация из файла
-            using (FileStream fs = new FileStream("XMLList.soap", FileMode.Open))
+            using (FileStream fs = new FileStream("SoapList.soap", FileMode.Open))
             {
+                fs.Position = 0;
+
                 while (fs.Position != fs.Length)
                 {
                     vehicles.Add((Vehicle)sf.Deserialize(fs));
                 }
-                
-                //vehicles = (List<Vehicle>)sp.Deserialize(fs);
 
-                //var veh = (List<Vehicle>)sp.Deserialize(fs);
+                //vehicles = (List<Vehicle>)sf.Deserialize(fs);
+
+                //var veh = (List<Vehicle>)sf.Deserialize(fs);
 
                 //Vehicle[] veh = (Vehicle[])sf.Deserialize(fs);
                 //foreach (Vehicle v in veh)
@@ -128,8 +201,80 @@ namespace vsrpp_3
                 //}
 
                 PrintVehicles();
-                Console.WriteLine("объект десериализован");
+                Console.WriteLine("объект десериализован"); 
             }
+                */
+
+            //vehicles.Clear();
+            //    SoapFormatter formatter = new SoapFormatter();
+            //    // десериализация из файла
+            //    using (FileStream fs = new FileStream("SoapList.soap", FileMode.Open))
+            //    {
+            //        while (fs.Position != fs.Length)
+            //        {
+            //            vehicles.Add((Vehicle)formatter.Deserialize(fs));
+            //        }
+            //        PrintVehicles();
+            //        Console.WriteLine("объект десериализован");
+            //    }
+
+        }
+
+        public void SerializeObject<T>(T serializableObject, string fileName)
+        {
+            if (serializableObject == null) { return; }
+
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                XmlSerializer serializer = new XmlSerializer(serializableObject.GetType());
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    serializer.Serialize(stream, serializableObject);
+                    stream.Position = 0;
+                    xmlDocument.Load(stream);
+                    xmlDocument.Save(fileName);
+                    stream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log exception here
+            }
+        }
+
+        public T DeserializeObject<T>(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) { return default(T); }
+
+            T objectOut = default(T);
+
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(fileName);
+                string xmlString = xmlDocument.OuterXml;
+
+                using (StringReader read = new StringReader(xmlString))
+                {
+                    Type outType = typeof(T);
+
+                    XmlSerializer serializer = new XmlSerializer(outType);
+                    using (XmlReader reader = new XmlTextReader(read))
+                    {
+                        objectOut = (T)serializer.Deserialize(reader);
+                        reader.Close();
+                    }
+
+                    read.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log exception here
+            }
+
+            return objectOut;
         }
     }
 }

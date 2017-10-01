@@ -10,7 +10,7 @@ using System.IO;
 namespace vsrpp_3
 {
     [Serializable]
-    class Vehicle
+    public class Vehicle
     {        
         public string Brand { get; set; }
         public string Model { get; set; }

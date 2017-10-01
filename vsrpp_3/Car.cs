@@ -24,5 +24,8 @@ namespace vsrpp_3
             return "This is a Car! " +
                 base.Print();
         }
+
+        public Car()
+        { }
     }
 }
